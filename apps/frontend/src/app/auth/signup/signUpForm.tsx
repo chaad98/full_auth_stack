@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import SubmitButton from "@/components/ui/submitButton";
 import React from "react";
 
 const SignUpForm = () => {
@@ -25,6 +26,7 @@ const SignUpForm = () => {
           <Label htmlFor="password">Password</Label>
           <Input id="password" name="password" type="password"></Input>
         </div>
+        <SubmitButton>Sign Up</SubmitButton>
       </div>
     </form>
   );
