@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+/*
+* TITLE - HOW TO EXPORT YOUR SCHEMA TO NEON POSTGRESQL *
+
+** Step 1: after you have done npx prisma init, you need to write your own schema model here
+** Step 2: then you need to go to Neon dashboard and copy the Prisma connection string and paste into .env, "DATABASE_URL:...."
+** Step 3: then you push your schema to the database using this command, npx prisma migrate dev --name init
+
+**** Explanation of step 3,
+                                This will:
+
+                                Generate the migration SQL.
+
+                                Apply it to your Neon database.
+
+                                Generate the Prisma client for your models.
+****
+
+** ALTERNATIVE **
+- If you want to just apply the schema without migration history (like for prototyping), use: npx prisma db push
+- Then, make sure you generate the client so you can use it in your code: npx prisma generate
+*****************
+*/
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Comment {
+  id                        Int                     @id @default(autoincrement())
+  text                      String
+  createdAt                 DateTime?               @default(now()) @db.Timestamp()
+  user_id                   Int
+  user                      User                    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "comments_author_id_users_id_fk")
+  post_id                   Int
+  post                      Post                    @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "comments_post_id_posts_id_fk")
+}
+
+model Post {
+  id                        Int                     @id @default(autoincrement())
+  createdAt                 DateTime                @default(now())
+  slug                      String
+  title                     String
+  desc                      String
+  img                       String?
+  views                     Int                     @default(0)
+  catSlug                   String
+  cat                       Category                @relation(fields: [catSlug], references: [slug])
+  userEmail                 String
+  user                      User                    @relation(fields: [userEmail], references: [email])
+  comments                  Comment[]
+}
+
+model User {
+  id                        Int                     @id @default(autoincrement())
+  email                     String                  @unique
+  name                      String
+  password                  String
+  hashedRefreshToken        String?
+  role                      Role                    @default(USER)
+  comments                  Comment[]
+  posts                     Post[]
+}
+
+model Category {
+  id                        Int                     @id @default(autoincrement())
+  slug                      String                  @unique
+  title                     String
+  img                       String?
+  Posts                     Post[]
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+  USER
+}
