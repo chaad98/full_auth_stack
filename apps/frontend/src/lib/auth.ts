@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { BACKEND_URL } from "./constants";
 import { FormState, SignInFormSchema, SignUpFormSchema } from "./type";
+import { createSession } from "./session";
 
 export async function signUp(
   state: FormState,
@@ -65,8 +66,15 @@ export async function signIn(
 
   if (response.ok) {
     const result = await response.json();
-    // TODO: Create the Session for authenticated user
-    console.log({ result });
+
+    await createSession({
+      user: {
+        id: result.id,
+        name: result.name,
+      },
+    });
+
+    redirect("/"); // This endpoint refers as dashboard or home page of our website route
   } else {
     return {
       message:
