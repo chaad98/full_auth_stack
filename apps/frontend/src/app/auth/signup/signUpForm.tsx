@@ -4,14 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SubmitButton from "@/components/ui/submitButton";
 import { signUp } from "@/lib/auth";
-import { error } from "console";
+import Link from "next/link";
 import React, { useActionState } from "react";
 
 const SignUpForm = () => {
   const [state, action] = useActionState(signUp, undefined);
   return (
     <form action={action}>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 w-64">
         {state?.message && (
           <p className="text-sm text-red-500">{state.message}</p>
         )}
@@ -49,6 +49,13 @@ const SignUpForm = () => {
           </div>
         )}
         <SubmitButton>Sign Up</SubmitButton>
+
+        <div className="flex flex-col items-center md:flex-row justify-between text-sm mt-4">
+          <p>Already have an account?</p>
+          <Link className="underline" href={"/auth/signin"}>
+            Sign In
+          </Link>
+        </div>
       </div>
     </form>
   );
