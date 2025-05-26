@@ -38,7 +38,6 @@ const SessionEndedPage = (props: Props) => {
   useEffect(() => {
     const initParams = searchParams.get("cache");
     cache = initParams ? Number(initParams) : null;
-    console.log("first", cache);
 
     if (typeof cache === "number" && cache === 1) {
       const postParams = new URLSearchParams(searchParams.toString());
