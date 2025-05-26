@@ -9,5 +9,8 @@ export async function GET(req: NextRequest) {
 
   revalidatePath("/");
 
-  return NextResponse.redirect(new URL("/", req.nextUrl));
+  const url = new URL("/session-ended", req.nextUrl);
+  url.searchParams.set("cache", "1");
+
+  return NextResponse.redirect(url);
 }
