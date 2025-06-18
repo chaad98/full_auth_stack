@@ -47,6 +47,6 @@ export class AuthController {
   login(@Request() req) {
     // For now, this returns the user object.
     // In a real-world application, you would typically return a JWT access token and refresh token instead.
-    return req.user;
+    return this.authService.login(req.user.id, req.user.name);
   }
 }
