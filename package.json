@@ -9,8 +9,9 @@
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
     "prettier": "^3.5.3",
-    "turbo": "^2.5.4",
+    "turbo": "^2.5.8",
     "typescript": "5.8.2"
   },
   "engines": {
@@ -20,5 +21,10 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
